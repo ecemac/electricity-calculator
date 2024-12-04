@@ -1,87 +1,129 @@
 import React, { useState } from 'react';
 
 export const Form = () => {
-  const [chargePoints, setChargePoints] = useState<number>(20);
-  const [chargingPower, setChargingPower] = useState<number>(11);
-  const [arrivalProbability, setArrivalProbability] = useState<number>(100);
-  const [carConsumption, setCarConsumption] = useState<number>(18);
+  const initialState = {
+    chargePoints: 20,
+    chargingPower: 11,
+    arrivalProbability: 100,
+    carConsumption: 18,
+  };
+  const [userInput, setUserInput] = useState(initialState);
+  const [arrivalProbabilityError, setArrivalProbabilityError] = useState(false);
 
-  const inputContainerStyle = 'flex flex-col w-full items-center';
+  const inputContainerStyle = 'flex flex-col';
   const labelStyle = 'text-xs mb-2 text-neutral-900';
   const inputStyle =
-    'rounded-md py-2 px-6 text-2xl h-12 text-neutral-600 w-1/3 text-center border border-neutral-200';
+    'rounded-md py-2 px-6 mr-2 text-2xl h-12 text-neutral-600 w-24 text-center border border-neutral-200';
+  const spanStyle = 'text-xl text-neutral-900';
+
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    const numericValue = Number(value);
+
+    if (numericValue > 0)
+      setUserInput((prev) => ({ ...prev, [name]: numericValue }));
+  };
+
+  const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (
+      userInput.arrivalProbability < 20 ||
+      userInput.arrivalProbability > 200
+    ) {
+      setArrivalProbabilityError(true);
+    } else {
+      setArrivalProbabilityError(false);
+      alert('Success');
+    }
+  };
+
+  const handleReset = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    setUserInput({ ...initialState });
+  };
 
   return (
-    <div>
-      <form action="" className="flex justify-center gap-10">
+    <form onSubmit={handleOnSubmit} className="flex flex-col">
+      <div className="flex justify-around mb-8">
         <div className={inputContainerStyle}>
-          <label htmlFor="charge-points" className={labelStyle}>
-            Number of charge points
+          <label htmlFor="chargePoints" className={labelStyle}>
+            Number of charge points:
           </label>
           <input
             type="number"
-            id="charge-points"
-            name="charge-points"
-            value={chargePoints}
-            onChange={(e) => setChargePoints(Number(e.target.value))}
+            name="chargePoints"
+            value={userInput.chargePoints}
+            onChange={handleOnChange}
             className={inputStyle}
-            min={1}
           />
         </div>
         <div className={inputContainerStyle}>
-          <label htmlFor="charging-power" className={labelStyle}>
-            Charging power of charge point
+          <label htmlFor="chargingPower" className={labelStyle}>
+            Charging power of charge point:
           </label>
           <div>
             <input
               type="number"
-              id="charging-power"
-              name="charging-power"
-              value={chargingPower}
-              onChange={(e) => setChargingPower(Number(e.target.value))}
+              name="chargingPower"
+              value={userInput.chargingPower}
+              onChange={handleOnChange}
               className={inputStyle}
-              min={1}
             />
-            <span>kW</span>
+            <span className={spanStyle}>kW</span>
           </div>
         </div>
         <div className={inputContainerStyle}>
-          <label htmlFor="arrival-probability" className={labelStyle}>
-            Arrival probability (%20 - %200)
+          <label htmlFor="arrivalProbability" className={labelStyle}>
+            Arrival probability (%20 - %200):
           </label>
           <div>
             {' '}
             <input
               type="number"
-              id="arrival-probability"
-              name="arrival-probability"
-              value={arrivalProbability}
-              onChange={(e) => setArrivalProbability(Number(e.target.value))}
+              name="arrivalProbability"
+              value={userInput.arrivalProbability}
+              onChange={handleOnChange}
               className={inputStyle}
-              min={20}
-              max={200}
             />
-            <span>%</span>
+            <span className={spanStyle}>%</span>
           </div>
+          {arrivalProbabilityError && (
+            <span className="text-xs text-red-500 mt-1">
+              Please enter a value between 20% - 200%
+            </span>
+          )}
         </div>
         <div className={inputContainerStyle}>
-          <label htmlFor="car-consumption" className={labelStyle}>
-            Consumption of cars
+          <label htmlFor="carConsumption" className={labelStyle}>
+            Consumption of cars:
           </label>
           <div>
             <input
               type="number"
-              id="car-consumption"
-              name="car-consumption"
-              value={carConsumption}
-              onChange={(e) => setCarConsumption(Number(e.target.value))}
+              name="carConsumption"
+              value={userInput.carConsumption}
+              onChange={handleOnChange}
               className={inputStyle}
-              min={1}
             />
-            <span>kWh</span>
+            <span className={spanStyle}>kWh</span>
           </div>
         </div>
-      </form>
-    </div>
+      </div>
+      <div className="self-center">
+        <button
+          type="reset"
+          onClick={handleReset}
+          className="text-sm font-medium rounded-full bg-neutral-200 text-neutral-600 px-4 py-1 mr-5"
+        >
+          Reset
+        </button>
+        <button
+          type="submit"
+          className="text-sm font-medium rounded-full bg-gray-900 text-neutral-100 px-4 py-1"
+        >
+          Submit
+        </button>
+      </div>
+    </form>
   );
 };
