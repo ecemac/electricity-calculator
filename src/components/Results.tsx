@@ -8,7 +8,7 @@ import { ChargingMetrics } from './charts/ChargingMetrics';
 export const Results = ({ submitSuccess }: { submitSuccess: boolean }) => (
   <>
     {submitSuccess && (
-      <div className="mt-14 grid grid-cols-1 md:grid-cols-2 gap-10">
+      <div className="mt-14 px-4 xl:px-0 grid grid-cols-1 lg:grid-cols-2 gap-10">
         <ChargingValues />
         <ExamplaryDay />
         <TotalEnergy />

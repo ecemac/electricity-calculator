@@ -22,7 +22,7 @@ export const Form = () => {
   const [arrivalProbabilityError, setArrivalProbabilityError] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
-  const inputContainerStyle = 'flex flex-col';
+  const inputContainerStyle = 'flex flex-col xl:w-3/5 justify-between';
   const labelStyle = 'text-xs mb-2 text-neutral-900';
   const inputStyle =
     'rounded-md py-2 px-6 mr-2 text-2xl h-12 text-neutral-600 w-24 text-center border border-neutral-300';
@@ -56,9 +56,9 @@ export const Form = () => {
     <>
       <form
         onSubmit={handleOnSubmit}
-        className="flex justify-between items-center gap-14"
+        className="flex flex-col px-4 xl:px-0 md:flex-row justify-between items-center gap-8 lg:gap-14"
       >
-        <div className="flex justify-between w-full">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 xl:gap-0 w-full">
           <div className={inputContainerStyle}>
             <label htmlFor="chargePoints" className={labelStyle}>
               Number of charge points:
@@ -73,7 +73,7 @@ export const Form = () => {
           </div>
           <div className={inputContainerStyle}>
             <label htmlFor="chargingPower" className={labelStyle}>
-              Charging power of charge point:
+              Charging power of charge points:
             </label>
             <div>
               <input
@@ -123,11 +123,11 @@ export const Form = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col">
+        <div className="flex self-end md:self-center items-center md:flex-col gap-3">
           <button
             type="reset"
             onClick={handleReset}
-            className="text-sm font-medium rounded-full bg-neutral-200 text-neutral-600 px-4 py-1 mb-3"
+            className="text-sm font-medium rounded-full bg-neutral-200 text-neutral-600 px-4 py-1"
           >
             Reset
           </button>
