@@ -6,7 +6,7 @@ function App() {
     <div>
       <header className="p-3 text-lg shadow-md shadow-gray-300 bg-white">
         <div className="md:max-w-screen-xl m-auto">
-          <span className="text-blue-950 font-extrabold">Electricity</span>
+          <span className="text-blue-950 font-extrabold">Energy</span>
           <span className="text-neutral-600">Calculator</span>
         </div>
       </header>
