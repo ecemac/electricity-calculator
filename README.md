@@ -1,46 +1,40 @@
-# Getting Started with Create React App
+# Project Overview
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+You can see the screenshots of the project below:
+
+![Ekran Resmi 2024-12-08 14 04 41](https://github.com/user-attachments/assets/b0403ff6-2dad-46b9-9914-8ac76f042121)
+![Ekran Resmi 2024-12-08 14 04 54](https://github.com/user-attachments/assets/0754de2a-1ffd-47ba-9add-face608c50cb)
+![Ekran Resmi 2024-12-08 14 05 16](https://github.com/user-attachments/assets/bec0ecf6-8a91-4cf0-873f-73673c8ecf4d)
+![Ekran Resmi 2024-12-08 14 06 17](https://github.com/user-attachments/assets/d1082589-2564-4ed2-8dcb-f51dc5e89f01)
+![Ekran Resmi 2024-12-08 14 06 30](https://github.com/user-attachments/assets/b5d69742-77c5-439a-b4a9-03d61007b4ba)
+![Ekran Resmi 2024-12-08 14 06 54](https://github.com/user-attachments/assets/e8e052cd-b84a-447a-b8ae-16883e6deb3f)
+
 
 ## Available Scripts
 
 In the project directory, you can run:
+
+### `npm install`
+
+Installs the dependencies locally.
 
 ### `npm start`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
 ### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Launches the test runner in the interactive watch mode.
 
-### `npm run build`
+## Project Features
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The UI accepts four inputs from the user. The inputs except only numbers and do not accept negative values.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Additionally, when an input is zero, user sees an error message and cannot submit the form.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+When the `Create charge points` is clicked, additional inputs for custom charge point metrics are created.
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+If inputs are all valid, the `Submit` button shows the graph results below.
