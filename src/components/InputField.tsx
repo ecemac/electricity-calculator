@@ -20,10 +20,15 @@ export const InputField = ({
   onChange,
 }: InputFieldProps) => (
   <div className="flex flex-col">
-    {label && <label className="text-xs mb-2 text-neutral-900">{label}</label>}
+    {label && (
+      <label htmlFor={name} className="text-xs mb-2 text-neutral-900">
+        {label}
+      </label>
+    )}
     <div>
       <input
         type="number"
+        id={name}
         name={name}
         value={value}
         onChange={onChange}

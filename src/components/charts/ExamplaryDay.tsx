@@ -47,7 +47,7 @@ export const ExamplaryDay = () => {
     plugins: {
       title: {
         display: true,
-        text: 'Exemplary Day: Hourly Energy Consumption',
+        text: 'Examplary Day: Hourly Energy Consumption',
         font: { size: 12 },
       },
       legend: {
