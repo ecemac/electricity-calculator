@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { InputField } from './InputField';
 import { Results } from './Results';
 
 type ChargeMetricsType = {
@@ -35,14 +36,16 @@ export const Form = () => {
 
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
-  const inputContainerStyle = 'flex flex-col';
   const labelStyle = 'text-xs mb-2 text-neutral-900';
-  const inputStyle =
-    'rounded-md py-2 px-6 mr-2 text-2xl h-12 text-neutral-600 w-24 text-center border border-neutral-300';
-  const spanStyle = 'text-xl text-neutral-900';
-  const errorStyle = 'text-xs text-red-500 mt-1';
 
   const genericError = 'Please enter a valid number';
+
+  const validateInput = (name: string, value: number): boolean => {
+    if (name === 'arrivalProbability' && (value < 20 || value > 200))
+      return true;
+    if (value < 1) return true;
+    return false;
+  };
 
   const handleOnChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -50,6 +53,8 @@ export const Form = () => {
   ) => {
     const { name, value } = e.target;
     const numericValue = Number(value);
+
+    const validationResult = validateInput(name, numericValue);
 
     if (
       (name === 'chargePoints' || name === 'chargingPower') &&
@@ -59,38 +64,19 @@ export const Form = () => {
 
       updatedMetrics[index] = {
         ...updatedMetrics[index],
-        [name]: { value: numericValue },
+        [name]: { value: numericValue, error: validationResult },
       };
 
       setUserInput((prev) => ({
         ...prev,
         chargeMetrics: updatedMetrics,
       }));
-
-      if (numericValue < 1)
-        updatedMetrics[index] = {
-          ...updatedMetrics[index],
-          [name]: { value: numericValue, error: true },
-        };
     }
 
-    setUserInput((prev) => ({ ...prev, [name]: { value: numericValue } }));
-
-    if (
-      name === 'arrivalProbability' &&
-      (numericValue < 20 || numericValue > 200)
-    ) {
-      setUserInput((prev) => ({
-        ...prev,
-        [name]: { value: numericValue, error: true },
-      }));
-    }
-
-    if (numericValue < 1)
-      setUserInput((prev) => ({
-        ...prev,
-        [name]: { value: numericValue, error: true },
-      }));
+    setUserInput((prev) => ({
+      ...prev,
+      [name]: { value: numericValue, error: validationResult },
+    }));
   };
 
   const handleAddChargeMetric = () => {
@@ -118,7 +104,14 @@ export const Form = () => {
 
   const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Check error status and block submit
+    const chargeMetricsHasErrors = chargeMetrics.some(
+      (metric) => metric.chargePoints.error || metric.chargingPower.error,
+    );
+
+    const hasErrors = arrivalProbability.error || carConsumption.error;
+
+    if (chargeMetricsHasErrors || hasErrors) return;
+
     setSubmitSuccess(true);
   };
 
@@ -145,36 +138,22 @@ export const Form = () => {
             </div>
             {chargeMetrics.map((metric, index) => (
               <div key={index} className="grid grid-cols-2 mb-2">
-                <div className="flex flex-col">
-                  <input
-                    type="number"
-                    name="chargePoints"
-                    value={metric.chargePoints.value}
-                    onChange={(e) => handleOnChange(e, index)}
-                    className={inputStyle}
-                    min={0}
-                  />
-                  {metric.chargePoints.error && (
-                    <span className={errorStyle}>{genericError}</span>
-                  )}
-                </div>
+                <InputField
+                  name="chargePoints"
+                  value={metric.chargePoints.value}
+                  onChange={(e) => handleOnChange(e, index)}
+                  error={metric.chargePoints.error}
+                  errorMessage={genericError}
+                />
+
                 <div className="flex justify-between">
-                  <div>
-                    <div>
-                      <input
-                        type="number"
-                        name="chargingPower"
-                        value={metric.chargingPower.value}
-                        onChange={(e) => handleOnChange(e, index)}
-                        className={inputStyle}
-                        min={0}
-                      />
-                      <span className={spanStyle}>kW</span>
-                    </div>
-                    {metric.chargingPower.error && (
-                      <span className={errorStyle}>{genericError}</span>
-                    )}
-                  </div>
+                  <InputField
+                    name="chargingPower"
+                    value={metric.chargingPower.value}
+                    onChange={(e) => handleOnChange(e, index)}
+                    error={metric.chargingPower.error}
+                    errorMessage={genericError}
+                  />
 
                   {index > 0 && (
                     <button
@@ -189,47 +168,24 @@ export const Form = () => {
               </div>
             ))}
           </div>
-          <div className={inputContainerStyle}>
-            <label htmlFor="arrivalProbability" className={labelStyle}>
-              Arrival probability (%20 - %200):
-            </label>
-            <div>
-              {' '}
-              <input
-                type="number"
-                name="arrivalProbability"
-                value={arrivalProbability.value}
-                onChange={handleOnChange}
-                className={inputStyle}
-                min={0}
-              />
-              <span className={spanStyle}>%</span>
-            </div>
-            {arrivalProbability.error && (
-              <span className="text-xs text-red-500 mt-1">
-                Please enter a value between 20% - 200%
-              </span>
-            )}
-          </div>
-          <div className={inputContainerStyle}>
-            <label htmlFor="carConsumption" className={labelStyle}>
-              Consumption of cars:
-            </label>
-            <div>
-              <input
-                type="number"
-                name="carConsumption"
-                value={carConsumption.value}
-                onChange={handleOnChange}
-                className={inputStyle}
-                min={0}
-              />
-              <span className={spanStyle}>kWh</span>
-            </div>
-            {carConsumption.error && (
-              <span className={errorStyle}>{genericError}</span>
-            )}
-          </div>
+          <InputField
+            label="Arrival probability (%20 - %200):"
+            name="arrivalProbability"
+            value={arrivalProbability.value}
+            onChange={handleOnChange}
+            extraLabel="%"
+            error={arrivalProbability.error}
+            errorMessage="Please enter a value between 20% - 200%"
+          />
+          <InputField
+            label="Consumption of cars:"
+            name="carConsumption"
+            value={carConsumption.value}
+            onChange={handleOnChange}
+            extraLabel="kWh"
+            error={carConsumption.error}
+            errorMessage={genericError}
+          />
         </div>
         <div className="flex self-center md:self-start items-center md:flex-col gap-3 md:w-1/3 lg:w-1/4">
           <button
