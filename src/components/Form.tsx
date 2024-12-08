@@ -40,6 +40,7 @@ export const Form = () => {
 
   const genericError = 'Please enter a valid number';
 
+  // Input validation for values smaller than 1 and specifically for arrivalProbability (20-200)
   const validateInput = (name: string, value: number): boolean => {
     if (name === 'arrivalProbability' && (value < 20 || value > 200))
       return true;
@@ -62,6 +63,7 @@ export const Form = () => {
     ) {
       const updatedMetrics = [...chargeMetrics];
 
+      // Updates the specific metric according to it's index
       updatedMetrics[index] = {
         ...updatedMetrics[index],
         [name]: { value: numericValue, error: validationResult },
@@ -73,12 +75,14 @@ export const Form = () => {
       }));
     }
 
+    // Updates other inputs according to their names
     setUserInput((prev) => ({
       ...prev,
       [name]: { value: numericValue, error: validationResult },
     }));
   };
 
+  // Adds additional charge metric inputs with default values
   const handleAddChargeMetric = () => {
     setSubmitSuccess(false);
     setUserInput((prev) => ({
@@ -93,6 +97,7 @@ export const Form = () => {
     }));
   };
 
+  // Filters out the removed index
   const handleRemoveChargeMetric = (index: number) => {
     setSubmitSuccess(false);
     const updatedMetrics = chargeMetrics.filter((_, i) => i !== index);
@@ -104,6 +109,8 @@ export const Form = () => {
 
   const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // Checks if there are any errors in inputs
     const chargeMetricsHasErrors = chargeMetrics.some(
       (metric) => metric.chargePoints.error || metric.chargingPower.error,
     );
